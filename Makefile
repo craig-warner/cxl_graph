@@ -2,10 +2,10 @@ init:
 	pip install -r requirements.txt --break-system-packages
 
 test:
-#	py.test tests
+	./bin/cxl_graph.py --analyze_graph --ifile data/finance/finance256.gml --verbose > log
 
 sample:
-	python3 bin/cxl_graph.py --gen_sample
+	./bin/cxl_graph.py --gen_sample
 
 clean:
 	rm data/sample/*

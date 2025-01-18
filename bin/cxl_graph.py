@@ -63,11 +63,26 @@ def DoAnalyze(ifile):
     g = ig.load(ifile)
     if args.verbose:
         print("Info: Done Loading Graph")
+        print("Info: Total Verticies=",g.vcount())
+        print("Info: Total Edges=",g.ecount())
+    if args.verbose:
+        print("Info: Generating Neighbors")
+    neis=[] 
+    vn=0
+    for v in g.vs: 
+        l_neis = g.neighbors(vn)
+        print("Info: Vertice:",v," has ",len(l_neis)," neighbors")
+        neis.append(l_neis)
+        for nv in l_neis:
+            print ("    ",nv)
+        vn=vn+1
+    if args.verbose:
+        print("Info: Done Generating Neighbors")
 
 
 # CLI Parser
 parser = argparse.ArgumentParser(description='CXL Graph')
-parser.add_argument("--ifile", help="Template file (.gml)", default="data/sample/social_network.gml")
+parser.add_argument("--ifile", help="Graph file (.gml)", default="data/sample/social_network.gml")
 parser.add_argument("--gen_sample", help="Generate a sample", action = "store_true")
 parser.add_argument("--analyze_graph", help="Analyze a graph", action = "store_true")
 parser.add_argument("-v", "--verbose", help="Increase output verbosity",action ="store_true") 
