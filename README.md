@@ -1,38 +1,27 @@
-# Mandelbrot Background Drawer
+# CXL Graph
 
-Mandelbrot-background generates custom Desktop backgrounds for you personal computer.  The backgrounds
-are made up of Mandelbrot fractal images of different sizes and different positions in the real number, complex
-number coordinate system.   By selecting the Mandelbrot image locations you can personalize your wallpaper. Below is an example background image.
-
+<!---
+Need to generate a icon and screenshot 
 <img src="snap/gui/sz1920x1080.png">
+-->
 
-The program also supports a Command Line Interface (CLI) for sophisticated users who want more control.
-The CLI is:
 ```
-usage: mandelbrot-background [-h] [--ifile IFILE] [--ofile OFILE] [--ozfile OZFILE] [-v] [--nogui] [--izfile IZFILE]
-                             [--display DISPLAY] [-V]
+usage: cxl_graph.py [-h] [--ifile IFILE] [--gen_sample] [--analyze_graph] [-v] [-V]
 
-Mandelbrot Background
+CXL Graph
 
 options:
-  -h, --help         show this help message and exit
-  --ifile IFILE      Template file (.hjson)
-  --ofile OFILE      Output file (.bmp)
-  --ozfile OZFILE    Output Zoom path file (.hjson)
-  -v, --verbose      Increase output verbosity
-  --nogui            No Graphical User Interface
-  --izfile IZFILE    NoGUI: Input Zoom path file (.hjson)
-  --display DISPLAY  NoGUI: Display Size File (.hjson)
-  -V, --version      show program's version number and exit
+  -h, --help       show this help message and exit
+  --ifile IFILE    Template file (.gml)
+  --gen_sample     Generate a sample
+  --analyze_graph  Analyze a graph
+  -v, --verbose    Increase output verbosity
+  -V, --version    show program's version number and exit
 ```
 
 ## Snap Build Steps
 
 <pre>
 1) Test locally
-1) %snapcraft
-2) %snapcraft install
+1) Details coming soon 
 </pre>
-
-
-

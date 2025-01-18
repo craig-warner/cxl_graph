@@ -5,7 +5,7 @@ test:
 #	py.test tests
 
 sample:
-	python3 bin/cxl_graph.py
+	python3 bin/cxl_graph.py --gen_sample
 
 clean:
 	rm data/sample/*
