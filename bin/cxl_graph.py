@@ -8,6 +8,7 @@ author: Craig Warner
 """
 
 import igraph as ig
+import numpy as np
 import argparse
 import matplotlib.pyplot as plt
 
@@ -67,17 +68,73 @@ def DoAnalyze(ifile):
         print("Info: Total Edges=",g.ecount())
     if args.verbose:
         print("Info: Generating Neighbors")
-    neis=[] 
+    one_away=[] 
+    less_two_away=[] 
+    for v_num in range(0,int(g.vcount())):
+        l_list=[] 
+        one_away.append(l_list)
+        m_list=[] 
+        less_two_away.append(m_list)
     vn=0
     for v in g.vs: 
-        l_neis = g.neighbors(vn)
-        print("Info: Vertice:",v," has ",len(l_neis)," neighbors")
-        neis.append(l_neis)
-        for nv in l_neis:
-            print ("    ",nv)
+        l_one_away = g.neighbors(vn)
+        l_less_two_away= g.neighborhood(vn,order=2)
+        print("Info: Vertice:",vn,":",v," has ",len(l_one_away)," neighbors")
+        for nv in l_one_away:
+            one_away[vn].append(nv)
+        for nv in l_less_two_away:
+            less_two_away[vn].append(nv)
+        print ("    :",end='')
+        for nv in l_one_away:
+            print (nv," ",end='')
         vn=vn+1
+        print (" ")
+    # Debug
+    for v_num in range(0,int(g.vcount())):
+        print ("V:",v_num,end='')
+        print(one_away[v_num])
+    for v_num in range(0,int(g.vcount())):
+        print ("V:",v_num,end='')
+        print(less_two_away[v_num])
     if args.verbose:
         print("Info: Done Generating Neighbors")
+    if args.verbose:
+        print("Info: Connection list")
+    direct_connection_weight = np.zeros((g.vcount(),g.vcount()),dtype=int)
+    for vfrom_num in range(0,int(g.vcount())):
+        if args.verbose:
+            print("Info: From V:",vfrom_num)
+        for vto_num in range(0,int(g.vcount())):
+            for n in one_away[vfrom_num]:
+                if(n == vto_num):
+                    direct_connection_weight[vfrom_num][vto_num] = 1
+    # Debug
+    print(direct_connection_weight)
+    most_connected_count = 0
+    connection_weight = np.zeros((g.vcount(),g.vcount()),dtype=int)
+    for vfrom_num in range(0,int(g.vcount())):
+        if args.verbose:
+            print("Info: From V:",vfrom_num)
+        for vto_num in range(0,int(g.vcount())):
+            if(direct_connection_weight[vfrom_num][vto_num] == 0): 
+                # Look for indirect
+                for n in less_two_away[vfrom_num]:
+                    #if args.verbose:
+                    #    print("Checking:",vfrom_num,":",vto_num,":",n)
+                    if(n == vto_num):
+                        connection_weight[vfrom_num][vto_num] = connection_weight[vfrom_num][vto_num] + 1
+                        if(most_connected_count < connection_weight[vfrom_num][vto_num]):
+                            most_connected_count = connection_weight[vfrom_num][vto_num]
+    # Debug
+    print(connection_weight)
+    if args.verbose:
+        print("Info: Reporting Most connected, max connection=",most_connected_count)
+    for cvalue in range(int(most_connected_count),0,-1):
+        print("Reporting Connection = ",cvalue) 
+        for vfrom_num in range(0,int(g.vcount())):
+            for vto_num in range(0,int(g.vcount())):
+                if(connection_weight[vfrom_num][vto_num] == cvalue):
+                    print( "From:",vfrom_num," To:",vto_num)
 
 
 # CLI Parser
