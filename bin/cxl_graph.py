@@ -102,26 +102,30 @@ def DoAnalyze(ifile):
         print("Info: Connection list")
     direct_connection_weight = np.zeros((g.vcount(),g.vcount()),dtype=int)
     for vfrom_num in range(0,int(g.vcount())):
+    # DEBUG
         if args.verbose:
-            print("Info: From V:",vfrom_num)
+            if(vfrom_num % 1000 == 0):
+                print("Info: From V:",vfrom_num)
         for vto_num in range(0,int(g.vcount())):
             for n in one_away[vfrom_num]:
-                if(n == vto_num):
+                if(vto_num != vfrom_num) and (n == vto_num):
                     direct_connection_weight[vfrom_num][vto_num] = 1
     # Debug
     print(direct_connection_weight)
     most_connected_count = 0
     connection_weight = np.zeros((g.vcount(),g.vcount()),dtype=int)
     for vfrom_num in range(0,int(g.vcount())):
+    # DEBUG
         if args.verbose:
-            print("Info: From V:",vfrom_num)
+            if(vfrom_num % 1000 == 0):
+                print("Info: From V:",vfrom_num)
         for vto_num in range(0,int(g.vcount())):
             if(direct_connection_weight[vfrom_num][vto_num] == 0): 
                 # Look for indirect
                 for n in less_two_away[vfrom_num]:
                     #if args.verbose:
                     #    print("Checking:",vfrom_num,":",vto_num,":",n)
-                    if(n == vto_num):
+                    if(vto_num != vfrom_num) and (n == vto_num):
                         connection_weight[vfrom_num][vto_num] = connection_weight[vfrom_num][vto_num] + 1
                         if(most_connected_count < connection_weight[vfrom_num][vto_num]):
                             most_connected_count = connection_weight[vfrom_num][vto_num]
